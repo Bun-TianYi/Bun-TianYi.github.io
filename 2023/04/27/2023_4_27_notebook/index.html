@@ -28,7 +28,7 @@
 <meta property="og:description" content="视频理解论文串讲——下一（跟着李沐学ai视频）笔记Non-local Neural Networks 主讲论文：Non-local Neural Networks   这篇论文带来的改变比较重要，因此会花较多的时间来整理相关工作，Let’s do it！ 论文开篇提出，当今卷积工作与常用操作对图像的处理都是局部性的（local neighborhood），无论在空间上还是在时间上，要想通过这些操作">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-30T11:53:50.134Z">
+<meta property="article:modified_time" content="2023-05-04T08:58:20.108Z">
 <meta property="article:author" content="墨雨清泉">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="视频理解相关">
@@ -202,7 +202,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-04-30 19:53:50" itemprop="dateModified" datetime="2023-04-30T19:53:50+08:00">2023-04-30</time>
+                <time title="修改时间：2023-05-04 16:58:20" itemprop="dateModified" datetime="2023-05-04T16:58:20+08:00">2023-05-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,6 +293,13 @@ Z_i=W_zy_i+x_i \tag{5}</script><p>这个公式其实际上就是图二的形式�
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/16/2023_4_3_Notebook/" rel="prev" title="第一篇博客">
+      <i class="fa fa-chevron-left"></i> 第一篇博客
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
     
   </article>
@@ -366,14 +373,14 @@ Z_i=W_zy_i+x_i \tag{5}</script><p>这个公式其实际上就是图二的形式�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -467,6 +474,61 @@ Z_i=W_zy_i+x_i \tag{5}</script><p>这个公式其实际上就是图二的形式�
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
