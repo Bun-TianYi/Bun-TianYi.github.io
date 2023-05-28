@@ -28,7 +28,7 @@
 <meta property="og:description" content="视频理解论文串讲——终（跟着李沐学ai视频）笔记TimeSformer 主讲论文：Is Space-Time Attention All You Need for Video Understanding?   这篇文章是将Transformer正式引入视频领域的实验性论文。众所周知，Transformer在图像与视频领域上的应用难点在于无法将整个视频或图片丢给transformer进行训练，那么实">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-05-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-05-27T11:27:09.234Z">
+<meta property="article:modified_time" content="2023-05-28T05:34:06.394Z">
 <meta property="article:author" content="墨雨清泉">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="视频理解相关">
@@ -196,10 +196,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-05-27 00:00:00 / 修改时间：19:27:09" itemprop="dateCreated datePublished" datetime="2023-05-27T00:00:00+08:00">2023-05-27</time>
+              <time title="创建时间：2023-05-27 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-27T00:00:00+08:00">2023-05-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-28 13:34:06" itemprop="dateModified" datetime="2023-05-28T13:34:06+08:00">2023-05-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -254,9 +260,9 @@
 <li><p>Decomposition into patches，根据ViT那篇论文的方法，将视频的每一帧都切割成若干小块（如图3），形式化表达一下，那就是对于 $t$ 时间上的一帧 $x_t\in X$，将其切成 $P\times P$个小块，将这些小块拉直后，每一RGB帧都可表示为 $x_{p,t}\in \R^{3P^2}, p=1,…,N;t=1,…,F$。这里说明一下，拉直是为了接下来我们能直接用四维张量进行直接运算，并且方便我们进行位置编码。</p>
 </li>
 </ul>
-<h3 id="Linear-embedding（位置编码）"><a href="#Linear-embedding（位置编码）" class="headerlink" title="Linear embedding（位置编码）"></a>Linear embedding（位置编码）</h3><p>这里作者使用了最简单的可学习线性映射编码，这是根据bert的论文来决定的，目前来说绝对位置编码与可学习位置编码的差异不大，但是大多数论文好像普遍认为再模型趋于庞大的时候，让模型自己学习位置编码是更好的选择，只能说有待研究。那么直接给出线性编码的形式化表达:</p>
+<h3 id="Linear-embedding（位置编码）"><a href="#Linear-embedding（位置编码）" class="headerlink" title="Linear embedding（位置编码）"></a>Linear embedding（位置编码）</h3><p>这里作者使用了最简单的可学习线性映射编码，这是根据bert的论文来决定的，目前来说绝对位置编码与可学习位置编码的差异不大，但是大多数论文好像普遍认为当模型趋于庞大的时候，让模型自己学习位置编码是更好的选择，只能说有待研究。那么直接给出线性编码的形式化表达:</p>
 <blockquote>
-<p>这里, $E\in \R ^{D\times 3P^2}$，$z^0_{p,t}\in \R^D$，这个$D$的确定有一点歧义</p>
+<p>这里, $E\in \R ^{D\times 3P^2}$，$z^0_{p,t}\in \R^D$</p>
 <script type="math/tex; mode=display">
 z^0_{p,t}=Ex_{p,t}+e^{pos}_{p,t} \tag{1}</script><p>这个公式的含义就是将一个patch编码到向量 $z^0_{p,t}$ 上，Transformer是会堆叠好几个自注意力模块的，因此这个上标0的表示目前这个编码处于模型的最开始阶段，$e^{pos}$ 是编码每个patch的空间位置的可学习向量，这个向量的含义就是定位每个patch的位置，$E$ 也是一个可学习矩阵，它将 $x_{p,t}$ 进行一个线性映射。</p>
 </blockquote>
@@ -271,7 +277,7 @@ z^0_{p,t}=Ex_{p,t}+e^{pos}_{p,t} \tag{1}</script><p>这个公式的含义就是�
 q^{l,a}_{p,t}=W_Q^{l,a}LN(z^{l-1}_{p,t}) \in \R ^{D_h}</script><script type="math/tex; mode=display">
 k^{l,a}_{p,t}=W_K^{l,a}LN(z^{l-1}_{p,t}) \in \R ^{D_h}</script><script type="math/tex; mode=display">
 v^{l,a}_{p,t}=W_V^{l,a}LN(z^{l-1}_{p,t}) \in \R ^{D_h}\tag{2}</script><p>这里的$LN(\cdot)$表示LayerNorm。$a=1,…,A$，表示多头自注意力的数量，$l$ 表示当前是网络的第几层。这里的 $D_h=D/A$ 就是决定一个注意力头输入多少通道的数据了（这里的通道不再是RGB的3个，而是我们设定的编码特征）。</p>
-<h3 id="Self-attention-computation"><a href="#Self-attention-computation" class="headerlink" title="Self-attention computation"></a>Self-attention computation</h3><p>该部分计算我们以第一个patch，第一帧为例进行原理说明，具体的当然要看代码才能理解得比较深刻。</p>
+<h3 id="Self-attention-computation"><a href="#Self-attention-computation" class="headerlink" title="Self-attention computation"></a>Self-attention computation</h3><p>该部分计算有一个很容易引发歧义的地方，请注意 $z^0_{0,0}$ 表示的是一个一个嵌入的分类向量，并非原始的输入数据。</p>
 <p>首先计算自注意力权重 $\alpha^{l,a}_{p,t}\in^{N(F+1)}$（这里的 $t=0,1,…,F$ 所以 $F$ 需要加1，第一帧通常是不参与后续计算的，只是作为一个冷启动的条件）：</p>
 <script type="math/tex; mode=display">
 \alpha^{l,a}_{p,t}=Softermax(\frac{q^{(l,a)^T}_{p,t}}{\sqrt {D_h}}\cdot [k^{l,a}_{0,0}\{ k^{l,a}_{p',t'} \}_{p'=1,...,N;t'=1,...,F}]) \tag{3}</script><p>这里的 $k^{l,a}_{0,0}$ 就是 $z^{l,a}_{0,0}$ 对应的Key向量，$k^{l,a}_{0,0}\{ k^{l,a}_{p’,t’} \}$ 并非矩阵乘法，而是拼接的意思。还记得前面说过的，这篇论文提出了5种对比patch相似度的方法，那自然在公式这方面就要做对应的改进了，上述公式实际上就是在对比所有时间帧上的所有patch。这里为了对比理解，论文给出了一个仅对比空间patch的公式变种：</p>
